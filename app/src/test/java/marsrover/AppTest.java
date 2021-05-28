@@ -3,6 +3,7 @@
  */
 package marsrover;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,4 +12,20 @@ class AppTest {
         App classUnderTest = new App();
         assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
     }
+
+    @DisplayName("Given a single rover, when received commands -the rover's position is updated. ")
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.CsvFileSource(resources = "/001WithInputsSingleRoverAndExpectedResults")
+    void Test01(int startX, int startY, String startAngle, String commands,
+                int endX, int endY,String endAngle) {
+
+        Rover rover1 = new Rover(startX, startY, startAngle);
+        rover1.applyCommands(commands);
+        assertEquals(endX, rover1.getX());
+        assertEquals(endY, rover1.getY());
+        assertEquals(endAngle,rover1.getAngle());
+
+    }
+
+
 }

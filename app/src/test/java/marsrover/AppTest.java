@@ -8,10 +8,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
-    @Test void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
-    }
 
     @DisplayName("Given a single rover, when received commands -the rover's position is updated. ")
     @org.junit.jupiter.params.ParameterizedTest
@@ -19,11 +15,19 @@ class AppTest {
     void Test01(int startX, int startY, String startAngle, String commands,
                 int endX, int endY,String endAngle) {
 
-        Rover rover1 = new Rover(startX, startY, startAngle);
-        rover1.applyCommands(commands);
+        int angleStart = Cardinal.valueOf(startAngle).getAngle();
+        int angleEnds = Cardinal.valueOf(endAngle).getAngle();
+        Rover rover1 =  new Rover(startX, startY, angleStart);
+
+        for (int i = 0; i <commands.length() ; i++) {
+            String currentCommand = String.valueOf(commands.charAt(i));
+            var command = Commands.valueOf(currentCommand);
+            command.applyToVehicule(rover1);
+        }
+
         assertEquals(endX, rover1.getX());
         assertEquals(endY, rover1.getY());
-        assertEquals(endAngle,rover1.getAngle());
+        assertEquals(angleEnds,rover1.getAngle());
 
     }
 

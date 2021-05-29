@@ -17,7 +17,7 @@ class AppTest {
 
         int angleStart = Cardinal.valueOf(startAngle).getAngle();
         int angleEnds = Cardinal.valueOf(endAngle).getAngle();
-        Rover rover1 =  new Rover(startX, startY, angleStart);
+        Rover rover1 =  new Rover(angleStart, startX, startY);
 
         for (int i = 0; i <commands.length() ; i++) {
             String currentCommand = String.valueOf(commands.charAt(i));

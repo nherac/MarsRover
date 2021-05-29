@@ -10,6 +10,9 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
 
+    // https://plugins.gradle.org/plugin/io.freefair.lombok
+    id "io.freefair.lombok" version "6.0.0-m2"
+
 }
 
 repositories {
@@ -31,6 +34,8 @@ dependencies {
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:30.0-jre'
+
+    implementation 'org.projectlombok:lombok:1.18.20'
 
 }
 

@@ -14,7 +14,6 @@ public enum Commands {
 
         }
     };
-
     Commands(int angle){
         this.angle = angle;
     }

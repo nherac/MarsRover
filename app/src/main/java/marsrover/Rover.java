@@ -1,5 +1,10 @@
 package marsrover;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Rover {
     private int angle;
     private int x;
@@ -16,35 +21,14 @@ public class Rover {
         boolean negativeAngle = (angle<0);
         if(negativeAngle){
             var positiveAngle = switch(angle){
-                case -90 ->270;
-                case -180 ->180;
-                case -270 ->90;
+                case -90 -> 270;
+                case -180 -> 180;
+                case -270 -> 90;
                 default -> throw new IllegalArgumentException("This angle is not supported");
             };
             angle = positiveAngle;
         }
         this.angle = angle;
     }
-
-    public int getAngle() {
-        return angle;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
 
 }

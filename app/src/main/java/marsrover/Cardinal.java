@@ -1,5 +1,8 @@
 package marsrover;
 
+import lombok.Getter;
+
+@Getter
 public enum Cardinal {
     N(90,0,1, "North"),
     W(180,-1,0, "West"),
@@ -25,17 +28,5 @@ public enum Cardinal {
             case 0 -> Cardinal.E;
             default -> throw new IllegalArgumentException("Not supported cardinal");
         };
-    }
-
-    public int getAngle() {
-        return this.angle;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY(){
-        return y;
     }
 }

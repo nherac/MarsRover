@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
 
-    @DisplayName("Given a single rover, when received commands -the rover's position is updated. ")
+    @DisplayName("Given a single rover, when received commands, then the rover's position is updated.")
     @org.junit.jupiter.params.ParameterizedTest
     @org.junit.jupiter.params.provider.CsvFileSource(resources = "/001WithInputsSingleRoverAndExpectedResults")
     void Test01(int startX, int startY, String startAngle, String commands,

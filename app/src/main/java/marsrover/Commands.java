@@ -7,24 +7,11 @@ public enum Commands {
         @Override
         public void applyToVehicule(Rover rover) {
             var roverCardinalPosition = Cardinal.valueOf(rover.getAngle());
-            switch(roverCardinalPosition){
-                case N:{
-                    var newRoverY = rover.getY() + 1;
-                    rover.setY(newRoverY);
-                }break;
-                case S:{
-                    var newRoverY = rover.getY() -1;
-                    rover.setY(newRoverY);
-                }break;
-                case E:{
-                    var newRoverX = rover.getX() + 1;
-                    rover.setX(newRoverX);
-                }break;
-                case W:{
-                    var newRoverX = rover.getX() - 1;
-                    rover.setX(newRoverX);
-                }break;
-            }
+            var newXForRover = roverCardinalPosition.getX() + rover.getX();
+            rover.setX(newXForRover);
+            var newYForRover = roverCardinalPosition.getY() + rover.getY();
+            rover.setY(newYForRover);
+
         }
     };
 

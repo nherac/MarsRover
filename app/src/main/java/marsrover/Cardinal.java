@@ -30,4 +30,12 @@ public enum Cardinal {
     public int getAngle() {
         return this.angle;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY(){
+        return y;
+    }
 }

@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.function.IntPredicate;
 
 @Getter
-@Setter
 public class Area {
     private IntPredicate validX;
     private IntPredicate validY;

@@ -10,5 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 public class Task {
     private final Rover rover;
-    private final List<Commands> commands;
+    @Setter
+    private List<Commands> commands;
 }

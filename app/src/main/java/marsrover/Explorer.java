@@ -18,11 +18,13 @@ public class Explorer {
     public void executeTasks(){
         listOfTasks.stream().forEach(this::executeSingleTask);
     }
+
     private void executeSingleTask(Task singleTask){
         Rover r = singleTask.getRover();
         singleTask.getCommands()
                   .stream()
                   .forEach(c -> executeSingleCommand(r, c));
+        singleTask.setCommands(Collections.emptyList());
     }
 
     private void executeSingleCommand(Rover r, Commands c) {
@@ -63,8 +65,8 @@ public class Explorer {
         //arg[0] and arg[1] are the area upper right coordinates.
         //we set the predicates for a square starting at 0,0
         //if we want to use another shape, these predicates would be different
-        IntPredicate rangeX = x -> x>0 && x<Integer.valueOf(args[0]);
-        IntPredicate rangeY = y -> y>0 && y<Integer.valueOf(args[1]);
+        IntPredicate rangeX = x -> x>=0 && x<=Integer.valueOf(args[0]);
+        IntPredicate rangeY = y -> y>=0 && y<=Integer.valueOf(args[1]);
         //If the input is not a number, the system will throw a IllegalArgumentException.
         //Now we can create the plateau
         Area area = new Area(rangeX, rangeY);

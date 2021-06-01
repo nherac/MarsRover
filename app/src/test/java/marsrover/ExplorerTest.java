@@ -11,12 +11,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ExplorerTest {
 
-    @DisplayName("Given a single rover, when received commands, then the rover's position is updated.")
+    @DisplayName("Happy path. Given a single rover, when received commands, then the rover's position is updated.")
     @org.junit.jupiter.params.ParameterizedTest
     @org.junit.jupiter.params.provider.CsvFileSource(resources = "/001WithInputsSingleRoverAndExpectedResults")
-    void Test01(int upperRightXArea, int upperRightYArea, int startX, int startY, String startAngle, String commands,
-                int endX, int endY,String endAngle) {}
-    
+    void Test01(String input, int endX, int endY,String endAngle) {
+        String[] inputArgs = input.split(",");
+        int endAngelInDegrees = Cardinal.valueOf(endAngle).getAngle();
+        Explorer instanceToTest = Explorer.getInstance(inputArgs);
+        instanceToTest.executeTasks();
+        instanceToTest.getListOfTasks()
+                      .forEach(t -> {
+                                        var rover = t.getRover();
+                                        assertEquals(endX, rover.getX());
+                                        assertEquals(endY, rover.getY());
+                                        assertEquals(endAngelInDegrees, rover.getAngle());
+        });
+    }
+
     @DisplayName("When getting an input with the intial speficication format, we get an explorer system")
     @ParameterizedTest
     @CsvSource({

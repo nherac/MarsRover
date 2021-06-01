@@ -11,21 +11,30 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ExplorerTest {
 
-    @DisplayName("Happy path. Given a single rover, when received commands, then the rover's position is updated.")
+    @DisplayName("Happy path. Given an correct formated input, which valid options the system updated the Rovers coordinates")
     @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.CsvFileSource(resources = "/001WithInputsSingleRoverAndExpectedResults")
-    void Test01(String input, int endX, int endY,String endAngle) {
+    @org.junit.jupiter.params.provider.CsvFileSource(resources = "/001HappyPathInputs")
+    void Test01(String input, String output) {
+        //Arrange
         String[] inputArgs = input.split(",");
-        int endAngelInDegrees = Cardinal.valueOf(endAngle).getAngle();
         Explorer instanceToTest = Explorer.getInstance(inputArgs);
+
+        //Act
         instanceToTest.executeTasks();
-        instanceToTest.getListOfTasks()
-                      .forEach(t -> {
-                                        var rover = t.getRover();
-                                        assertEquals(endX, rover.getX());
-                                        assertEquals(endY, rover.getY());
-                                        assertEquals(endAngelInDegrees, rover.getAngle());
-        });
+
+        //Test
+        int outputArgsIndex = 0;
+        String[] outputArgs = output.split(",");
+        for(Task t: instanceToTest.getListOfTasks()){
+            var endX = Integer.valueOf(outputArgs[outputArgsIndex]);
+            var endY = Integer.valueOf(outputArgs[outputArgsIndex + 1]);
+            int endAngelInDegrees = Cardinal.valueOf( outputArgs[outputArgsIndex + 2]).getAngle();
+            var rover = t.getRover();
+            assertEquals(endX, rover.getX());
+            assertEquals(endY, rover.getY());
+            assertEquals(endAngelInDegrees, rover.getAngle());
+            outputArgsIndex = outputArgsIndex + 3;
+        }
     }
 
     @DisplayName("When getting an input with the intial speficication format, we get an explorer system")

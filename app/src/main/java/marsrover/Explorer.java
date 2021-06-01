@@ -28,7 +28,7 @@ public class Explorer {
     private void executeSingleCommand(Rover r, Commands c) {
         var currentRoverX = r.getX();
         var currentRoverY = r.getY();
-        c.applyToVehicule(r);
+        c.applyToRover(r);
         this.area.removeBusyCoordinate(currentRoverX,currentRoverY);
         var newRoverX = r.getX();
         var newRoverY = r.getY();

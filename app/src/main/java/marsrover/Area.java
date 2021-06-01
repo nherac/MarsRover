@@ -14,6 +14,7 @@ public class Area {
     private IntPredicate validY;
     private Set<Integer> busyX;
     private Set<Integer> busyY;
+
     public Area(IntPredicate rangeXValues, IntPredicate rangeYValues ){
         busyX = new HashSet<Integer>();
         busyY = new HashSet<Integer>();

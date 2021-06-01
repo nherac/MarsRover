@@ -1,11 +1,13 @@
 package marsrover;
 
 public enum Commands {
+
     L(90),
     R(-90),
     M(0){
+
         @Override
-        public void applyToVehicule(Rover rover) {
+        public void applyToRover(Rover rover) {
             var roverCardinalPosition = Cardinal.valueOf(rover.getAngle());
             var newXForRover = roverCardinalPosition.getX() + rover.getX();
             rover.setX(newXForRover);
@@ -18,7 +20,7 @@ public enum Commands {
         this.angle = angle;
     }
     private final int angle;
-    public void applyToVehicule(Rover rover){
+    public void applyToRover(Rover rover){
         var newAngleForRover = rover.getAngle() + this.angle;
         rover.setAngle(newAngleForRover);
     }

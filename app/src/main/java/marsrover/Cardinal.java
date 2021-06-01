@@ -4,10 +4,12 @@ import lombok.Getter;
 
 @Getter
 public enum Cardinal {
+
     N(90,0,1, "North"),
     W(180,-1,0, "West"),
     S(270,0,-1, "South"),
     E(0,1,0,"East");
+
     private Cardinal(int angle, int x, int y, String name){
         this.angle = angle;
         this.x= x;

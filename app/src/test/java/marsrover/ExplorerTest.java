@@ -11,6 +11,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ExplorerTest {
 
+    @DisplayName("Given a single rover, when received commands, then the rover's position is updated.")
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.CsvFileSource(resources = "/001WithInputsSingleRoverAndExpectedResults")
+    void Test01(int upperRightXArea, int upperRightYArea, int startX, int startY, String startAngle, String commands,
+                int endX, int endY,String endAngle) {}
+    
     @DisplayName("When getting an input with the intial speficication format, we get an explorer system")
     @ParameterizedTest
     @CsvSource({

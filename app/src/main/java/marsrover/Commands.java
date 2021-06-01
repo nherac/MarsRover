@@ -16,10 +16,13 @@ public enum Commands {
 
         }
     };
+
     Commands(int angle){
         this.angle = angle;
     }
+
     private final int angle;
+
     public void applyToRover(Rover rover){
         var newAngleForRover = rover.getAngle() + this.angle;
         rover.setAngle(newAngleForRover);
@@ -33,5 +36,4 @@ public enum Commands {
             default -> throw new IllegalArgumentException("Not supported command");
         };
     }
-
 }

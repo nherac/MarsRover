@@ -34,7 +34,13 @@ public class Explorer {
         this.area.removeBusyCoordinate(currentRoverX,currentRoverY);
         var newRoverX = r.getX();
         var newRoverY = r.getY();
-        this.area.addBusyCoordinate(newRoverX,newRoverY);
+        var outOfTheAreaRange = !(area.getValidX().test(newRoverX) && area.getValidY().test(newRoverY));
+        if(outOfTheAreaRange)
+            throw new IllegalArgumentException("This coordinate is out of the range of the Area");
+        var theCoordinateCanBeAddedToBusyCoordinates = this.area.addBusyCoordinate(newRoverX,newRoverY);
+        if(!theCoordinateCanBeAddedToBusyCoordinates){
+            throw new IllegalArgumentException("This coordinate is busy.");
+        };
     }
 
     public void printStatus(){
@@ -113,10 +119,6 @@ public class Explorer {
 
         return new Explorer(area,inputTasks);
     }
-
-
-
-
 
 }
 

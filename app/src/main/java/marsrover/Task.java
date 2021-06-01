@@ -11,5 +11,4 @@ import java.util.List;
 public class Task {
     private final Rover rover;
     private final List<Commands> commands;
-
 }

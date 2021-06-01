@@ -12,7 +12,7 @@ public class Explorer {
 
     private Explorer(Area area, List<Task> listOfTasks){
         this.area = area;
-        this.listOfTasks = List.copyOf(listOfTasks);
+        this.listOfTasks = listOfTasks;
     }
 
     public void executeTasks(){
@@ -33,6 +33,20 @@ public class Explorer {
         var newRoverX = r.getX();
         var newRoverY = r.getY();
         this.area.addBusyCoordinate(newRoverX,newRoverY);
+    }
+
+    public void printStatus(){
+        listOfTasks.forEach(t->{
+            var rover = t.getRover();
+            System.out.println(rover.getX() + " " + rover.getY() + " " + Cardinal.valueOf(rover.getAngle()));
+        });
+    }
+
+    public static void main(String[] args) {
+        Explorer explorer = getInstance(args);
+        explorer.executeTasks();
+        explorer.printStatus();
+
     }
 
     public static Explorer getInstance(String... args){

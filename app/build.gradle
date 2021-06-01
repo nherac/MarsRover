@@ -44,7 +44,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'marsrover.App'
+    mainClass = 'marsrover.Explorer'
 }
 
 tasks.named('test') {

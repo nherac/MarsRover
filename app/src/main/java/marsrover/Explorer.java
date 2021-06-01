@@ -12,7 +12,27 @@ public class Explorer {
 
     private Explorer(Area area, List<Task> listOfTasks){
         this.area = area;
-        this.listOfTasks = Collections.unmodifiableList(listOfTasks);
+        this.listOfTasks = List.copyOf(listOfTasks);
+    }
+
+    public void executeTasks(){
+        listOfTasks.stream().forEach(this::executeSingleTask);
+    }
+    private void executeSingleTask(Task singleTask){
+        Rover r = singleTask.getRover();
+        singleTask.getCommands()
+                  .stream()
+                  .forEach(c -> executeSingleCommand(r, c));
+    }
+
+    private void executeSingleCommand(Rover r, Commands c) {
+        var currentRoverX = r.getX();
+        var currentRoverY = r.getY();
+        c.applyToVehicule(r);
+        this.area.removeBusyCoordinate(currentRoverX,currentRoverY);
+        var newRoverX = r.getX();
+        var newRoverY = r.getY();
+        this.area.addBusyCoordinate(newRoverX,newRoverY);
     }
 
     public static Explorer getInstance(String... args){
@@ -32,6 +52,8 @@ public class Explorer {
         IntPredicate rangeX = x -> x>0 && x<Integer.valueOf(args[0]);
         IntPredicate rangeY = y -> y>0 && y<Integer.valueOf(args[1]);
         //If the input is not a number, the system will throw a IllegalArgumentException.
+        //Now we can create the plateau
+        Area area = new Area(rangeX, rangeY);
 
         //Now we are going to read the info about the rovers
 
@@ -43,13 +65,15 @@ public class Explorer {
         for(int i= 2; i < args.length; i = i+4){
             //The  xCoordinate
             int xCoor = Integer.valueOf(args[i]);
-            if(!rangeX.test(xCoor))
-                throw new IllegalArgumentException("Value is not in the area range for x values");
-
             //The yCoordinate
             int yCoor = Integer.valueOf(args[i+1]);
-            if(!rangeY.test(yCoor))
-                throw new IllegalArgumentException("Value is not in the area range for y values");
+
+            var isUnavalableCoordinate = !(area.getValidX().test(yCoor) &&
+                    area.getValidY().test(xCoor) &&
+                    area.addBusyCoordinate(xCoor, yCoor));
+
+            if(isUnavalableCoordinate)
+                throw new IllegalArgumentException("Coordinate values for the rover are not available in this area");
 
             //The angle. If the letter is different of N,W,S,E, it will throws an exception. Lower case
             //are not allowed, but only adding args[i+3].toUpperCase() will add the feature.
@@ -70,7 +94,7 @@ public class Explorer {
         }
 
         //now we can create the Explorer
-        Area area = new Area(rangeX, rangeY);
+
         return new Explorer(area,inputTasks);
     }
 

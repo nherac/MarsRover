@@ -5,6 +5,12 @@ package marsrover;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.CsvSource;
+
+import java.util.function.IntPredicate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
@@ -17,7 +23,7 @@ class AppTest {
 
         int angleStart = Cardinal.valueOf(startAngle).getAngle();
         int angleEnds = Cardinal.valueOf(endAngle).getAngle();
-        Rover rover1 =  new Rover(angleStart, startX, startY);
+        Rover rover1 =  new Rover(startX, startY,angleStart);
 
         for (int i = 0; i <commands.length() ; i++) {
             String currentCommand = String.valueOf(commands.charAt(i));
@@ -31,7 +37,30 @@ class AppTest {
 
     }
 
-    
+    @DisplayName("Given an area, test that created a rover is allowed")
+    @ParameterizedTest
+    @CsvSource({"5,5,N,2,2, true",
+                "5,10,N,1,6, true",
+                 "10,10,N,12,12, false"})
+    void testName(int xArea, int yArea,String roverAngle, int xCoordinate, int yCoordinate, boolean result) {
+        //Arrange
+        IntPredicate rangeX = x -> (x>=0 && x <= xArea);
+        IntPredicate rangeY = y -> (y>=0 && y<= yArea);
+        Area plateau = new Area(rangeX,rangeY);
+        boolean roverXCoorIsAllowed = plateau.getValidX().test(xCoordinate);
+        boolean roverYCoorIsAllowed = plateau.getValidY().test(yCoordinate);
+        assertEquals(result, roverXCoorIsAllowed && roverYCoorIsAllowed, ()-> "Coordinates are not valid");
+
+      /*  if(roverXCoorIsAllowed && roverYCoorIsAllowed){
+            int angle = Cardinal.valueOf(roverAngle).getAngle();
+            Rover rover1 = new Rover(angle, xCoordinate, yCoordinate);
+        }
+*/
+
+
+    }
+
+
 
 
 }

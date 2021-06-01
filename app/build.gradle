@@ -32,6 +32,9 @@ dependencies {
     // Use JUnit Jupiter Engine for testing.
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 
+    // Use Hamcrest
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:30.0-jre'
 

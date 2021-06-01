@@ -10,7 +10,7 @@ public class Rover {
     private int x;
     private int y;
 
-    public Rover(int angle, int x, int y) {
+    public Rover(int x, int y, int angle) {
         setAngle(angle);
         this.x = x;
         this.y = y;

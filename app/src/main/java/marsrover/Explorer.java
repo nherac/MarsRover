@@ -9,10 +9,12 @@ import java.util.function.IntPredicate;
 public class Explorer {
     private List<Task> listOfTasks;
     private Area area;
+    private Set<Coordinates> busyCoordinates;
 
     private Explorer(Area area, List<Task> listOfTasks){
         this.area = area;
         this.listOfTasks = listOfTasks;
+        this.busyCoordinates = new HashSet<>();
     }
 
     public void executeTasks(){
@@ -30,14 +32,32 @@ public class Explorer {
     private void executeSingleCommand(Rover r, Commands c) {
         var currentRoverX = r.getX();
         var currentRoverY = r.getY();
-        c.applyToRover(r);
-        this.area.removeBusyCoordinate(currentRoverX,currentRoverY);
+        //apply to the rover
+        switch (c){
+            case L: r.setAngle(r.getAngle()+90);break;
+            case R: r.setAngle(r.getAngle() -90);break;
+            case M: {
+                var currentOrientation = Cardinal.valueOf(r.getAngle());
+                var newXForRover = currentOrientation.getX() + r.getX();
+                r.setX(newXForRover);
+                var newYForRover = currentOrientation.getY() + r.getY();
+                r.setY(newYForRover);}break;
+            default: throw new IllegalArgumentException("Unsuported command");
+        }
+
+        Coordinates currentPosition = new Coordinates(currentRoverX,currentRoverY);
+        this.busyCoordinates.remove(currentPosition);
         var newRoverX = r.getX();
         var newRoverY = r.getY();
-        var outOfTheAreaRange = !(area.getValidX().test(newRoverX) && area.getValidY().test(newRoverY));
-        if(outOfTheAreaRange)
+
+        var outOfAreaRange = area.getValidX().negate().test(newRoverX)||
+                             area.getValidY().negate().test(newRoverY);
+        if(outOfAreaRange)
             throw new IllegalArgumentException("This coordinate is out of the range of the Area");
-        var theCoordinateCanBeAddedToBusyCoordinates = this.area.addBusyCoordinate(newRoverX,newRoverY);
+
+        var newRoverCoordinates = new Coordinates(newRoverX,newRoverY);
+
+        var theCoordinateCanBeAddedToBusyCoordinates = this.getBusyCoordinates().add(newRoverCoordinates);
         if(!theCoordinateCanBeAddedToBusyCoordinates){
             throw new IllegalArgumentException("This coordinate is busy.");
         };
@@ -90,12 +110,11 @@ public class Explorer {
             //The yCoordinate
             int yCoor = Integer.valueOf(args[i+1]);
 
-            var isUnavalableCoordinate = !(area.getValidX().test(yCoor) &&
-                    area.getValidY().test(xCoor) &&
-                    area.addBusyCoordinate(xCoor, yCoor));
+            var isUnavalableCoordinate = area.getValidX().negate().test(xCoor) ||
+                                         area.getValidY().negate().test(yCoor);
 
             if(isUnavalableCoordinate)
-                throw new IllegalArgumentException("Coordinate values for the rover are not available in this area");
+                throw new IllegalArgumentException("Coordinates values for the rover are not available in this area");
 
             //The angle. If the letter is different of N,W,S,E, it will throws an exception. Lower case
             //are not allowed, but only adding args[i+3].toUpperCase() will add the feature.

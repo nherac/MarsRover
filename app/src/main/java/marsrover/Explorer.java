@@ -3,6 +3,7 @@ package marsrover;
 import lombok.Getter;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.IntPredicate;
 
 @Getter
@@ -10,12 +11,15 @@ public class Explorer {
     private List<Rover> listOfRovers;
     private Area area;
     private Set<Coordinates> busyCoordinates;
+    private Map<Commands,Consumer<Position>> commandsTranslation;
 
 
     private Explorer(Area area, List<Rover> listOfRovers){
         this.area = area;
         this.listOfRovers = listOfRovers;
         this.busyCoordinates = new HashSet<>();
+        CommandsTranslator translator = new CommandsTranslator();
+        this.commandsTranslation = translator.map();
     }
 
     public void executeTasks(){
@@ -29,7 +33,7 @@ public class Explorer {
         areAvailableCoordinates(landingCoordinates);
         singleRover.getCommands()
                    .stream()
-                   .forEach(c -> applyCommandToSpecificPosition(singleRover.getPosition(), c));
+                   .forEach(c->commandsTranslation.get(c).accept(singleRover.getPosition()));
         singleRover.setCommands(Collections.emptyList());
     }
 
@@ -54,37 +58,7 @@ public class Explorer {
             throw new IllegalArgumentException("This coordinate is out of the range of the Area");
     }
 
-    private void applyCommandToSpecificPosition(Position r, Commands c) {
 
-        switch (c){
-            case L: r.setAngle(r.getAngle()+ 90);break;
-            case R: r.setAngle(r.getAngle() -90);break;
-            case M: executeMCommand(r);break;
-            default: throw new IllegalArgumentException("Unsupported command");
-        }
-
-    }
-
-    private void updateBusyCoordinates(Coordinates old, Position r){
-
-    }
-    private void executeMCommand(Position position){
-
-        var currentCoordinates = position.getCoordinates();
-        var currentOrientation = Cardinal.valueOf(position.getAngle());
-
-        var provisionalNewXForRover = currentOrientation.getX() + currentCoordinates.getX();
-        var provisionalNewYForRover = currentOrientation.getY() + currentCoordinates.getY();
-        var provisionalCoordinate = new Coordinates(provisionalNewXForRover,provisionalNewYForRover);
-
-        getBusyCoordinates().remove(currentCoordinates);
-        areInAreaRange(provisionalCoordinate);
-        areAvailableCoordinates(provisionalCoordinate);
-        //If the coordinate is not available, it will throw an exception.
-        //Everything is fine, then, I update the rover position
-        position.setCoordinates(provisionalCoordinate);
-
-    }
 
     public void printStatus(){
         System.out.println();
@@ -164,6 +138,41 @@ public class Explorer {
         //now we can create the Explorer
 
         return new Explorer(area, inputRovers);
+    }
+
+    private class CommandsTranslator {
+
+        Map<Commands, Consumer<Position>> map(){
+            Map<Commands,Consumer<Position>> result = new HashMap<>();
+
+            Consumer<Position> turnLeft = p -> p.setAngle(p.getAngle()+ 90);
+            result. put(Commands.L,turnLeft);
+
+            Consumer<Position> turnRight = p -> p.setAngle(p.getAngle()- 90);
+            result.put(Commands.R,turnRight);
+
+            Consumer<Position> moveForward = p-> moveForward(p);
+            result.put(Commands.M, moveForward);
+
+            return result;
+        }
+
+         void moveForward(Position position){
+            var currentCoordinates = position.getCoordinates();
+            var currentOrientation = Cardinal.valueOf(position.getAngle());
+
+            var provisionalNewXForRover = currentOrientation.getX() + currentCoordinates.getX();
+            var provisionalNewYForRover = currentOrientation.getY() + currentCoordinates.getY();
+            var provisionalCoordinate = new Coordinates(provisionalNewXForRover,provisionalNewYForRover);
+
+            getBusyCoordinates().remove(currentCoordinates);
+            areInAreaRange(provisionalCoordinate);
+            areAvailableCoordinates(provisionalCoordinate);
+            //If the coordinate is not available, it will throw an exception.
+            //Everything is fine, then, I update the rover position
+            position.setCoordinates(provisionalCoordinate);
+
+        }
     }
 
 }

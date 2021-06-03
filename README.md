@@ -21,12 +21,12 @@ We use the remainder
 
 
 The commands behaviour are:
-L-> +90 in the rover angle
-R-> -90 in the rover angle, 
+L-> +90 in the position angle
+R-> -90 in the position angle, 
 
 but coordinates are unaffected  in the Rover(0,0)
 
-When we use "M" command, the angle is unaffected but the coordinates changed depending on the rover cardinal position, 
+When we use "M" command, the angle is unaffected but the coordinates changed depending on the position cardinal position, 
 then, in the mathematical domain:
 
 Switch:
@@ -35,7 +35,7 @@ CASE West: xIncrement = -1, and yIncrement = 0
 Case South: xIncrement = 0 and yIncrement = -1,
 case East: xIncrement = 1, yIncrement = 0
 
-Regarding the area where the Rover will be exploring, before updating the rover position, we need to check that the new position is inside 
+Regarding the area where the Rover will be exploring, before updating the position position, we need to check that the new position is inside 
 the area, then, we model it using the "function domain"
 In the case of the plateau, the domain would be x>0 and x<= Plateau UpperRight X Coordinate
 y>0 and y<=Plateau UpperRight Y coordinate

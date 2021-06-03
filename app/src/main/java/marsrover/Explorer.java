@@ -7,66 +7,89 @@ import java.util.function.IntPredicate;
 
 @Getter
 public class Explorer {
-    private List<Task> listOfTasks;
+    private List<Rover> listOfRovers;
     private Area area;
     private Set<Coordinates> busyCoordinates;
 
-    private Explorer(Area area, List<Task> listOfTasks){
+
+    private Explorer(Area area, List<Rover> listOfRovers){
         this.area = area;
-        this.listOfTasks = listOfTasks;
+        this.listOfRovers = listOfRovers;
         this.busyCoordinates = new HashSet<>();
     }
 
     public void executeTasks(){
-        listOfTasks.stream().forEach(this::executeSingleTask);
+        listOfRovers.stream().forEach(this::executeSingleTask);
     }
 
-    private void executeSingleTask(Task singleTask){
-        Rover r = singleTask.getRover();
-        singleTask.getCommands()
-                  .stream()
-                  .forEach(c -> executeSingleCommand(r, c));
-        singleTask.setCommands(Collections.emptyList());
+    private void executeSingleTask(Rover singleRover){
+        Coordinates landingCoordinates = singleRover.getPosition().getCoordinates();
+        //Is the coordinate is available, it will be added. A busy coordinate generate IllegalArgumentException
+        areInAreaRange(landingCoordinates);
+        areAvailableCoordinates(landingCoordinates);
+        singleRover.getCommands()
+                   .stream()
+                   .forEach(c -> applyCommandToSpecificPosition(singleRover.getPosition(), c));
+        singleRover.setCommands(Collections.emptyList());
     }
 
-    private void executeSingleCommand(Rover r, Commands c) {
-        var currentRoverX = r.getX();
-        var currentRoverY = r.getY();
-        //apply to the rover
-        switch (c){
-            case L: r.setAngle(r.getAngle()+90);break;
-            case R: r.setAngle(r.getAngle() -90);break;
-            case M: {
-                var currentOrientation = Cardinal.valueOf(r.getAngle());
-                var newXForRover = currentOrientation.getX() + r.getX();
-                r.setX(newXForRover);
-                var newYForRover = currentOrientation.getY() + r.getY();
-                r.setY(newYForRover);}break;
-            default: throw new IllegalArgumentException("Unsuported command");
-        }
+    private void areAvailableCoordinates(Coordinates coordinates){
+        //Ad current rover position to busy coordinates. Rover lands
 
-        Coordinates currentPosition = new Coordinates(currentRoverX,currentRoverY);
-        this.busyCoordinates.remove(currentPosition);
-        var newRoverX = r.getX();
-        var newRoverY = r.getY();
+        var coordinateIsNotAvalible = !busyCoordinates.add(coordinates);
+        if(coordinateIsNotAvalible)
+            throw new IllegalArgumentException("This coordinate is busy, the rover cannot land");
+    }
 
-        var outOfAreaRange = area.getValidX().negate().test(newRoverX)||
-                             area.getValidY().negate().test(newRoverY);
+    private void areInAreaRange(Coordinates coordinates){
+        //These are the values to test
+        var newX = coordinates.getX();
+        var newY = coordinates.getY();
+
+        var outOfXRanges = area.getValidX().negate().test(newX);
+        var outOfYRange = area.getValidY().negate().test(newY);
+        var outOfAreaRange = outOfXRanges || outOfYRange;
+
         if(outOfAreaRange)
             throw new IllegalArgumentException("This coordinate is out of the range of the Area");
+    }
 
-        var newRoverCoordinates = new Coordinates(newRoverX,newRoverY);
+    private void applyCommandToSpecificPosition(Position r, Commands c) {
 
-        var theCoordinateCanBeAddedToBusyCoordinates = this.getBusyCoordinates().add(newRoverCoordinates);
-        if(!theCoordinateCanBeAddedToBusyCoordinates){
-            throw new IllegalArgumentException("This coordinate is busy.");
-        };
+        switch (c){
+            case L: r.setAngle(r.getAngle()+ 90);break;
+            case R: r.setAngle(r.getAngle() -90);break;
+            case M: executeMCommand(r);break;
+            default: throw new IllegalArgumentException("Unsupported command");
+        }
+
+    }
+
+    private void updateBusyCoordinates(Coordinates old, Position r){
+
+    }
+    private void executeMCommand(Position position){
+
+        var currentCoordinates = position.getCoordinates();
+        var currentOrientation = Cardinal.valueOf(position.getAngle());
+
+        var provisionalNewXForRover = currentOrientation.getX() + currentCoordinates.getX();
+        var provisionalNewYForRover = currentOrientation.getY() + currentCoordinates.getY();
+        var provisionalCoordinate = new Coordinates(provisionalNewXForRover,provisionalNewYForRover);
+
+        getBusyCoordinates().remove(currentCoordinates);
+        areInAreaRange(provisionalCoordinate);
+        areAvailableCoordinates(provisionalCoordinate);
+        //If the coordinate is not available, it will throw an exception.
+        //Everything is fine, then, I update the rover position
+        position.setCoordinates(provisionalCoordinate);
+
     }
 
     public void printStatus(){
-        listOfTasks.forEach(t->{
-            var rover = t.getRover();
-            System.out.println(rover.getX() + " " + rover.getY() + " " + Cardinal.valueOf(rover.getAngle()));
+        listOfRovers.forEach(t->{
+            var rover = t.getPosition();
+            //System.out.println(rover.getX() + " " + rover.getY() + " " + Cardinal.valueOf(rover.getAngle()));
         });
     }
 
@@ -101,8 +124,8 @@ public class Explorer {
 
         //validate the info about the rovers
 
-        //If the info is valid, it will be store in an ArrayList to identify the Rover order.
-        List<Task> inputTasks = new LinkedList<>();
+        //If the info is valid, it will be store in an ArrayList to identify the Position order.
+        List<Rover> inputRovers = new LinkedList<>();
 
         for(int i= 2; i < args.length; i = i+4){
             //The  xCoordinate
@@ -114,7 +137,7 @@ public class Explorer {
                                          area.getValidY().negate().test(yCoor);
 
             if(isUnavalableCoordinate)
-                throw new IllegalArgumentException("Coordinates values for the rover are not available in this area");
+                throw new IllegalArgumentException("Coordinates values for the position are not available in this area");
 
             //The angle. If the letter is different of N,W,S,E, it will throws an exception. Lower case
             //are not allowed, but only adding args[i+3].toUpperCase() will add the feature.
@@ -128,15 +151,16 @@ public class Explorer {
                 var command = Commands.valueOf(singleCommand);
                 listOfCommands.add(command);
             }
-            //At this point, we have a valid rover position with a valid command sequence. We can create the task
-            Rover rover = new Rover(xCoor,yCoor,angle);
-            Task task = new Task(rover,listOfCommands);
-            inputTasks.add(task);
+            //At this point, we have a valid position position with a valid command sequence. We can create the rover
+            Coordinates coordinates = new Coordinates(xCoor,yCoor);
+            Position position = new Position(coordinates,angle);
+            Rover rover = new Rover(position,listOfCommands);
+            inputRovers.add(rover);
         }
 
         //now we can create the Explorer
 
-        return new Explorer(area,inputTasks);
+        return new Explorer(area, inputRovers);
     }
 
 }

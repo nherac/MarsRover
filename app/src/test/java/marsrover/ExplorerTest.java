@@ -1,7 +1,6 @@
 package marsrover;
 
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import static  org.hamcrest.MatcherAssert.assertThat;
@@ -25,14 +24,14 @@ class ExplorerTest {
         //Test
         int outputArgsIndex = 0;
         String[] outputArgs = output.split(",");
-        for(Task t: instanceToTest.getListOfTasks()){
+        for(Rover t: instanceToTest.getListOfRovers()){
             var endX = Integer.valueOf(outputArgs[outputArgsIndex]);
             var endY = Integer.valueOf(outputArgs[outputArgsIndex + 1]);
             int endAngelInDegrees = Cardinal.valueOf( outputArgs[outputArgsIndex + 2]).getAngle();
-            var rover = t.getRover();
-            assertEquals(endX, rover.getX());
-            assertEquals(endY, rover.getY());
-            assertEquals(endAngelInDegrees, rover.getAngle());
+            var position = t.getPosition();
+            assertEquals(endX, position.getCoordinates().getX());
+            assertEquals(endY, position.getCoordinates().getY());
+            assertEquals(endAngelInDegrees, position.getAngle());
             outputArgsIndex = outputArgsIndex + 3;
         }
     }
@@ -48,7 +47,7 @@ class ExplorerTest {
 
         String[] inputArgs = input.split(",");
         Explorer instanceToTest = Explorer.getInstance(inputArgs);
-        assertThat(instanceToTest.getListOfTasks(),hasSize(numberOfTasks));
+        assertThat(instanceToTest.getListOfRovers(),hasSize(numberOfTasks));
 
     }
 

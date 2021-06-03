@@ -16,7 +16,7 @@ class ExplorerTest {
     void Test01(String input, String output) {
         //Arrange
         String[] inputArgs = input.split(",");
-        Explorer instanceToTest = Explorer.getInstance(inputArgs);
+        Explorer instanceToTest = ExplorerNasa.getInstance(inputArgs);
 
         //Act
         instanceToTest.executeTasks();
@@ -43,11 +43,11 @@ class ExplorerTest {
             "'5,5,1,2,N,LMLMLMLMM',1",
             "'5,5,1,2,N,LMLMLMLMM,3,3,E,MMRMMRMRRM,2,4,N,LMLMLMLMM',3"
     })
-    void getInstance(String input, int numberOfTasks) {
+    void getInstance(String input, int numberOfRovers) {
 
         String[] inputArgs = input.split(",");
-        Explorer instanceToTest = Explorer.getInstance(inputArgs);
-        assertThat(instanceToTest.getListOfRovers(),hasSize(numberOfTasks));
+        Explorer instanceToTest = ExplorerNasa.getInstance(inputArgs);
+        assertThat(instanceToTest.getListOfRovers(),hasSize(numberOfRovers));
 
     }
 
@@ -62,7 +62,7 @@ class ExplorerTest {
     void inputIsNotLongEnough(String input){
 
         String[] inputArgs = input.split(",");
-        Throwable t = assertThrows(IllegalArgumentException.class, ()->Explorer.getInstance(inputArgs));
+        Throwable t = assertThrows(IllegalArgumentException.class, ()->ExplorerNasa.getInstance(inputArgs));
 
     }
 }

@@ -9,7 +9,7 @@
   * Rover 2 starting point ->3 3 E
   * Rover 2 commands -> MMRMMRMRRM 
     Please, format the arguments in the following way:
-gradle run --args="5 5 1 2 N LMLMLMLMM 3 3 E MMRMMRMRRM"
+# gradle run --args="5 5 1 2 N LMLMLMLMM 3 3 E MMRMMRMRRM"
     
 The above arguments are valid ones.
 Try as many inputs you want to

@@ -42,7 +42,7 @@ public abstract class Explorer {
 
         var coordinateIsNotAvalible = !busyCoordinates.add(coordinates);
         if(coordinateIsNotAvalible)
-            throw new IllegalArgumentException("This coordinate is busy, the rover cannot land");
+            throw new IllegalArgumentException("This coordinate is busy, the rover cannot go here");
     }
 
     private void areInAreaRange(Coordinates coordinates){

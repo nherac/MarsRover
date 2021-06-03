@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import static  org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
+import static org.hamcrest.Matchers.in;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ExplorerTest {
@@ -51,11 +52,26 @@ class ExplorerTest {
 
     }
 
+    @DisplayName("When two rovers ends in the same point, the system will throws an exception")
+    @ParameterizedTest
+    @CsvSource({
+            "'5,5,3,3,E,MMRMMRMRRM,3,3,E,MMRMMRMRRM'",
+            "'5,5,1,2,N,LMLMLMLMM,1,2,N,LMLMLMLMM'",
+    })
+    void TestRoverBumpsWithEachOther(String input) {
+
+        String[] inputArgs = input.split(",");
+        Explorer instanceToTest = ExplorerNasa.getInstance(inputArgs);
+        Throwable t = assertThrows(IllegalArgumentException.class, ()->instanceToTest.executeTasks());
+        assertTrue(t.getMessage().contains("This coordinate is busy, the rover cannot go here"));
+
+    }
+
     @DisplayName("When introducing incorrect info, the system throws an exception")
     @ParameterizedTest
     @CsvSource(
             {
-                    "1,2,N,LMLMLMLMM",
+                    "'1,2,N,LMLMLMLMM',",
 
             }
     )

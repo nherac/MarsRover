@@ -14,8 +14,8 @@ public class UserInterface {
         }catch (RuntimeException e){
             if (e instanceof IllegalArgumentException){
                 String reason = e.getMessage();
-                System.out.println("Oh, the input in the simulation was caused because " + reason +
-                                   "Please, fix the input and don't worry, it wasn't the real Explorer");
+                throw new IllegalArgumentException("Oh, the input in the simulation was caused because " + reason +
+                                   " .Please, you can fix the input and don't worry, it wasn't the real Explorer");
 
             }else{
                 throw new RuntimeException("OH, the logic is wrong. You have sent it to Mars...fix the code");

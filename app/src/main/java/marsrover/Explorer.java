@@ -87,9 +87,12 @@ public class Explorer {
     }
 
     public void printStatus(){
-        listOfRovers.forEach(t->{
-            var rover = t.getPosition();
-            //System.out.println(rover.getX() + " " + rover.getY() + " " + Cardinal.valueOf(rover.getAngle()));
+        System.out.println();
+        listOfRovers.forEach(rover ->{
+            Position pos = rover.getPosition();
+            System.out.println(pos.getCoordinates().getX() + " " +
+                               pos.getCoordinates().getY() + " " +
+                               Cardinal.valueOf(pos.getAngle()));
         });
     }
 

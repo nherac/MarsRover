@@ -13,6 +13,9 @@ plugins {
     // https://plugins.gradle.org/plugin/io.freefair.lombok
     id "io.freefair.lombok" version "6.0.0-m2"
 
+    //To run tests from command line: https://plugins.gradle.org/plugin/com.adarshr.test-logger
+    id "com.adarshr.test-logger" version "3.0.0"
+
 }
 
 repositories {
@@ -21,7 +24,6 @@ repositories {
 }
 
 dependencies {
-
 
     // Use JUnit Jupiter API for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
@@ -51,3 +53,6 @@ tasks.named('test') {
     // Use junit platform for unit tests.
     useJUnitPlatform()
 }
+
+
+

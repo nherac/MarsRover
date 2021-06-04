@@ -103,7 +103,7 @@ As you can read above, there is a message saying that the input in the simulatio
 
 You can read it in the following link:
 
-https://github.com/nherac/MarsRover/TestReport.pdf
+https://github.com/nherac/MarsRover/blob/main/TestReport.pdf
 
 # 3. Caveats
 ## 3.a) Happy path. Expected use case.
@@ -122,6 +122,7 @@ The introduced commands should allow the rover to move inside the grid and witho
 ## 3.b) Invalid input. Unexpected use cases.
 
 The invalid inputs in this system are the following:
+// Pending to write all the exeptions
 
 If there is another kind of exception apart of the above, then, we need to look at the logic. 
 
@@ -152,6 +153,7 @@ But I have enjoyed the journey a lot.
 # 5. What I couldn't do for version 1
 
 * The code in ExplorerNasa.getInstance() is very long and I need to clean it.
+* Improve documentation, write all the exceptions the system throws.
 * Swap from using int to use double, this way, I the system will be use in a circle area.
 * The code is using "functional programming" over mutable objects, and it is not a secure practise. We need to rethink how to code it
 * It is not working for parallel programming

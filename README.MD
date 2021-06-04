@@ -45,7 +45,7 @@ gradle test
 ```
 And this is the result:
 
-![Command Line tests](./images/running tests command line.png)
+![Command Line tests](https://github.com/nherac/MarsRover/blob/main/images/running%20tests%20command%20line.png)
 ### From IntelliJ
 
 You can also run the test from IntelliJ. Please, the "show passed" botton should be selected

@@ -45,12 +45,12 @@ gradle test
 ```
 And this is the result:
 
-![Command Line tests](.\images\running tests command line.png)
+![Command Line tests](./images\running tests command line.png)
 ### From IntelliJ
 
 You can also run the test from IntelliJ. Please, the "show passed" botton should be selected
 
-![Running test intelliJ](images/runningTestsIntelliJ.png?raw=true "Running tests from the IDE IntelliJ")
+![Running test intelliJ](./images/runningTestsIntelliJ.png?raw=true "Running tests from the IDE IntelliJ")
 
 
 ## 2.b ) Running the program using your own inputs
@@ -123,23 +123,24 @@ If there is another kind of exception apart of the above, then, we need to look 
 
 
 # 4. Journey solving the exercise
-## Hand tracing analysis
+## 4.1) Hand tracing analysis
 More detail in this link
 [Hand Tracing solution](/Handtracing.md)
 
-## Coding
+## 4.2) Coding
 
-Trying to use test driven development, but being honest, there were moments where I was coding more implementation than test.
+Trying to use test driven development, but being honest, there were moments where I was coding more implementation code than tests.
 I can call it the "GREEN RED GREEN"  but with this meaning:
-Green -> trying to write tests firsts...and later the implementation
-Red-> Throwing caution to the wind and write implementation without tests
-Green -> going back to TDD and writting tests.
+
+* Green -> trying to write tests firsts...and later the implementation
+* Red-> Throwing caution to the wind and write implementation without tests
+* Green -> going back to TDD and writing tests.
 
 I have been coding using the lasted java version (Java 16), but being fair, the code could be done doing Java 8. I need to investigate how to apply the module system that Java 9 offers.
 
 
 
-# 5. What I learnt
+## 4.3) What I learnt
 
 That an apparently easy exercise requires a lot of time and the Mars rovers wasn't as easy as it looks like.
 But I have enjoyed the journey a lot.

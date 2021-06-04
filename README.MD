@@ -145,4 +145,13 @@ I have been coding using the lasted java version (Java 16), but being fair, the 
 That an apparently easy exercise requires a lot of time and the Mars rovers wasn't as easy as it looks like.
 But I have enjoyed the journey a lot.
 
+# 5. What I couldn't do for version 1
+
+* The code in ExplorerNasa.getInstance() is very long and I need to clean it.
+* Swap from using int to use double, this way, I the system will be use in a circle area.
+* The code is using "functional programming" over mutable objects, and it is not a secure practise. We need to rethink how to code it
+* It is not working for parallel programming
+* To validate the inputs, we are creating the same object that we use to lauch the rovers. We should think in an algorithm to validate inputs without running the full system
+* Using a logging system instead of "System.out.println"
+* Creating a  docker image instead of using gradle directly
 

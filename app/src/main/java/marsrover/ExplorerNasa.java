@@ -41,7 +41,7 @@ public class ExplorerNasa extends Explorer{
 
         //validate the info about the rovers
 
-        //If the info is valid, it will be store in an ArrayList to identify the Position order.
+        //If the info is valid, it will be store in an list
         List<Rover> inputRovers = new LinkedList<>();
 
         for(int i= 2; i < args.length; i = i+4){

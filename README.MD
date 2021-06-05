@@ -43,7 +43,7 @@ Increasing the commands that can be used only require to create a new element in
 The class **ExplorerNasa** is a child of Explorer and its only function is to parse the input and create an Explorer for that input. Using another kind of input requires to extend the Explorer class as we have done with ExplorerNasa. 
 Currently, this ExplorerNasa is expecting a grid and the lower left coordinates are (0,0). Also, a list of rovers. The solution expects 1 rover or more and throw an exception if there are not enough information to build one grid and one rover.
 
-The **UserInterface** class only missions are:
+The **UserInterface** class  responsibilities are:
 * to check that the input from the user can create a proper ExplorerNasa
 * That the explorer's input allows the rovers to explorer without having issues like going out of the Plateau or bump with eachother
 If the input causes issues in the mission, then, the UserInterface warns the users throwing an exception. If the input produces the happy path that the rovers can explorer without issue, then the real NasaExplorer is created and launched.
@@ -97,7 +97,7 @@ In the console, you will see the following:
     
 This solution runs the input introduced and check that it could be performed without throwing exception.
 If an illegal argument exception in the arguments is thrown, then, the system tell you:
-"Oh, you need to fix your input and the rovers won't be launched to Mars"
+"Oh, you need to fix your input, the rovers won't be launched to Mars"
 For example, if a rover will bump with another rover, the simulator warns you.
 
 ```
@@ -141,8 +141,15 @@ The rover can understand the commands L,R,M.
 The introduced commands should allow the rover to move inside the grid and withoud collided with other rovers.
 ## 3.b) Invalid input. Unexpected use cases.
 
-The invalid inputs in this system are the following:
-// Pending to write all the exeptions
+If there is an invalid input, the UserInterface class won't create a real Explorer.
+
+The invalid inputs that ExplorerNasa will complain are the following:
+
+* Not enough info to build a grid and one rover 
+* Not enough info in the list of rovers
+*  That the argument formats are incorrect, for example, try to use anything that is not a integer like a letter.
+* Or the commands and cardinal points are not valid ones
+* That the result of moving the rovers makes the rover bump with eachother or go out of the grid.
 
 If there is another kind of exception apart of the above, then, we need to look at the logic. 
 
@@ -170,12 +177,15 @@ Nevertheless, using the last version has allowed me to try the new switch expres
 That an apparently easy exercise requires a lot of time and the Mars rovers wasn't as easy as it looks like.
 But I have enjoyed the journey a lot.
 
-# 5. What I couldn't do for version 1
+# 5. What I would like to do for version 2
 
+* Swap from using integer in Coordinates to use floating point number, this way, we could use more kind of shapes like circumferences or triangles.
+* After implementing the full logic, I remember that the coordinates values in Cardinal could be deduced only with the angle using cos and sin values for the angle. Remove that unnecesary info.  
+* Check if there are any library that already have degrees calculation.
+* Read about how real system do those calculations.
 * Translate this code to Javascript and Python
 * The code in ExplorerNasa.getInstance() to parse the input and create the Explorer is very long. I need to clean it.
 * Improve documentation, write all the exceptions the system throws.
-* Swap from using integer in Coordinates to use floating point number, this way, we could use more kind of shapes like circumferences or triangles.
 * The code is using "functional programming" over mutable objects, and it is not a secure practise. We need to rethink how to code it
 * It is not working for parallel programming
 * To validate the inputs, we are creating the object ExplorerNasa twice. We should think in an algorithm to validate inputs without running the full system

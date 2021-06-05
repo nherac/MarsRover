@@ -1,4 +1,4 @@
-package marsrover;
+package marsrover.enumerated;
 
 import lombok.Getter;
 

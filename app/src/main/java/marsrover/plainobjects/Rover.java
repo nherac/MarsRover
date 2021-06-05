@@ -1,8 +1,9 @@
-package marsrover;
+package marsrover.plainobjects;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import marsrover.enumerated.Commands;
 
 import java.util.List;
 

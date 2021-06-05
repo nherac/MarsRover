@@ -1,4 +1,11 @@
-package marsrover;
+package marsrover.logic;
+
+import marsrover.enumerated.Cardinal;
+import marsrover.enumerated.Commands;
+import marsrover.plainobjects.Area;
+import marsrover.plainobjects.Coordinates;
+import marsrover.plainobjects.Position;
+import marsrover.plainobjects.Rover;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

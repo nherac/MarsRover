@@ -1,4 +1,4 @@
-package marsrover;
+package marsrover.enumerated;
 
 public enum Commands {
     L, R, M;

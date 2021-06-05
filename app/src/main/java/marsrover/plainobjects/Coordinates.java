@@ -1,4 +1,4 @@
-package marsrover;
+package marsrover.plainobjects;
 
 import lombok.*;
 

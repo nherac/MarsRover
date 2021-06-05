@@ -1,10 +1,15 @@
-package marsrover;
+package marsrover.logic;
 
 import lombok.Getter;
+import marsrover.enumerated.Cardinal;
+import marsrover.enumerated.Commands;
+import marsrover.plainobjects.Area;
+import marsrover.plainobjects.Coordinates;
+import marsrover.plainobjects.Position;
+import marsrover.plainobjects.Rover;
 
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.function.IntPredicate;
 
 @Getter
 public abstract class Explorer {

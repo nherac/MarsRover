@@ -1,5 +1,11 @@
 package marsrover;
 
+import marsrover.enumerated.Cardinal;
+import marsrover.logic.Explorer;
+import marsrover.logic.ExplorerNasa;
+import marsrover.plainobjects.Position;
+import marsrover.plainobjects.Rover;
+
 public class UserInterface {
     public static void main(String[] args) {
         try{

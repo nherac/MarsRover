@@ -8,12 +8,13 @@ The goal is to send rovers to the planet Mars.
 
 # 1. About this solution
 
+
 The solution uses:
 
 * Plain java objects (pojos) that doesn't contain any logic, apart getter/setter. They are Area, Coordinates, Position, Rover
 * Enum types to check the String in the input is the expected. They are Commands and Cardinal
 * Classes that contain logic to perform the operations. They are the parent class Explorer and the subclass(child) ExplorerNasa. The UserInterface uses ExplorerNasa.
-
+* Also uses the lasted Java version (Java 16 today) and the Unit framework Jupiter.
 
 The pojo **Area** contains two predicates that inform what it is the domain for x values and for y values. Adding a third dimension, like "z" would need to add another Predicate. This way, the area can be customized to any kind of rectangular shape or shapes that contains integers numbers. In case we want to use circumferences or other shapes, we would need to update the Coordinates pojo to use floating point numbers (double) instead of integers.
 
@@ -28,10 +29,10 @@ The pojo **Position** has the pojo "Coordinates" and an integer to represent the
 |S|270|(0,-1)|
 |W|0|(1,0)|
 
-The enumerated type Cardinal stores the info about the cardinal letter, to validate that the introduced position is allow, in case we introduce an incorrect letter for position, it will throw an exception.
+The enumerated type **Cardinal** stores the info about the cardinal letter, to validate that the introduced position is allowed, in case we introduce an incorrect letter for position, it will throw an exception.
 As the Area type, if we use floating point numbers instead of integers, we could use other cardinal position like North-East that mean the angle is 45 degrees and cause floating point results.
 
-The enumerated type Commands stores the info about the available commands. Then, if a command that is not supported is passed as an input, it will throw an exception. Current valid commands are L,R,M.
+The enumerated type **Commands** stores the info about the available commands. Then, if a command that is not supported is passed as an input, it will throw an exception. Current valid commands are L,R,M.
 
 The pojo **Rover** has a Position field and a list of Commands that should be applied on it. 
 
@@ -161,7 +162,7 @@ I can call it the "GREEN RED GREEN"  but with this meaning:
 * Green -> going back to TDD and writing tests.
 
 I have been coding using the lasted java version (Java 16), but being fair, the code could be done doing Java 8. I need to investigate how to apply the module system that Java 9 offers.
-
+Nevertheless, using the last version has allowed me to try the new switch expresions that came in Java 14.
 
 
 ## 4.3) What I learnt
@@ -171,12 +172,13 @@ But I have enjoyed the journey a lot.
 
 # 5. What I couldn't do for version 1
 
-* The code in ExplorerNasa.getInstance() is very long and I need to clean it.
+* Translate this code to Javascript and Python
+* The code in ExplorerNasa.getInstance() to parse the input and create the Explorer is very long. I need to clean it.
 * Improve documentation, write all the exceptions the system throws.
-* Swap from using int to use double, this way, I the system will be use in a circle area.
+* Swap from using integer in Coordinates to use floating point number, this way, we could use more kind of shapes like circumferences or triangles.
 * The code is using "functional programming" over mutable objects, and it is not a secure practise. We need to rethink how to code it
 * It is not working for parallel programming
-* To validate the inputs, we are creating the same object that we use to lauch the rovers. We should think in an algorithm to validate inputs without running the full system
+* To validate the inputs, we are creating the object ExplorerNasa twice. We should think in an algorithm to validate inputs without running the full system
 * Using a logging system instead of "System.out.println"
 * Creating a  docker image instead of using gradle directly
 

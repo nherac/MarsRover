@@ -92,7 +92,7 @@ gradle run --args="5 5 1 2 N LMLMLMLMM 3 3 E MMRMMRMRRM"
 
 In the console, you will see the following:
 
-![Custom inputs from command line](./images/running custom inputs from command line.png?raw=true "Running custom inputs")
+![Custom inputs from command line](https://github.com/nherac/MarsRover/blob/main/images/running%20custom%20inputs%20from%20command%20line.png")
 
     
 This solution runs the input introduced and check that it could be performed without throwing exception.

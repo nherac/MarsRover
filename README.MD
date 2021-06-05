@@ -8,25 +8,44 @@ The goal is to send rovers to the planet Mars.
 
 # 1. About this solution
 
-This solution translates the domain of the letters to the trigonometric domain. 
-This way, doing calculations is easier.
+The solution uses:
 
-Also, in cases we can use different letters, the logic in the code is unaffected and follows the principle of **"Open to extension, close to modification "**
-
-For example, a "Position" is a class that store the coordinates x and y and instead of a letter for the orientation, the Rover position stores the the angle the position represents.
-
-Also, the cardinal points are translated from letters to angle and coordinates.
-
-The commands are stored in a map, this way, adding new commands doesn't affect the logic, we have only to add the new command and how is applied to the rover.
-
-The Area object is powerful, because is using predictates and we are not limited to rectangular shapes. Only to shapes that can contains integers.
-Getting an area that is a circle or a triangle could be done if we modify  the Position class to use floating point numbers instead of integers.
-
-Thanks to all the above, this solution is easy extensible to other domains appart of a square grid.
-
-The solution can send more than two rovers.
+* Plain java objects (pojos) that doesn't contain any logic, apart getter/setter. They are Area, Coordinates, Position, Rover
+* Enum types to check the String in the input is the expected. They are Commands and Cardinal
+* Classes that contain logic to perform the operations. They are the parent class Explorer and the subclass(child) ExplorerNasa. The UserInterface uses ExplorerNasa.
 
 
+The pojo **Area** contains two predicates that inform what it is the domain for x values and for y values. Adding a third dimension, like "z" would need to add another Predicate. This way, the area can be customized to any kind of rectangular shape or shapes that contains integers numbers. In case we want to use circumferences or other shapes, we would need to update the Coordinates pojo to use floating point numbers (double) instead of integers.
+
+The pojo **Coordinates** contains two integers to represent the x and the y.
+
+The pojo **Position** has the pojo "Coordinates" and an integer to represent the angle. This way, we translate from the letters domain to the numerical domain, and to make the future logic of the code, we only need to apply trigonometry math formulas. This way:
+
+|Cardinal Letter| Angle|In case we position is increment forward,how coordinates should increment|
+|---------------|------|-------------------------------------------------------------------------|
+|N|90| (0,1)|
+|E|180|(-1,0)|
+|S|270|(0,-1)|
+|W|0|(1,0)|
+
+The enumerated type Cardinal stores the info about the cardinal letter, to validate that the introduced position is allow, in case we introduce an incorrect letter for position, it will throw an exception.
+As the Area type, if we use floating point numbers instead of integers, we could use other cardinal position like North-East that mean the angle is 45 degrees and cause floating point results.
+
+The enumerated type Commands stores the info about the available commands. Then, if a command that is not supported is passed as an input, it will throw an exception. Current valid commands are L,R,M.
+
+The pojo **Rover** has a Position field and a list of Commands that should be applied on it. 
+
+Logic about how to apply the commands in the Rover is in the Explorer class, that contains a map specifies how  to apply each commands.
+The logic is contained in this abstract class, Explorer, that gets each single rover and apply the list the commands on them depending on the map.
+Increasing the commands that can be used only require to create a new element in the map, and the rest of the logic won't need any modification, then, this is following the "Open to extension, close to modification".
+
+The class **ExplorerNasa** is a child of Explorer and its only function is to parse the input and create an Explorer for that input. Using another kind of input requires to extend the Explorer class as we have done with ExplorerNasa. 
+Currently, this ExplorerNasa is expecting a grid and the lower left coordinates are (0,0). Also, a list of rovers. The solution expects 1 rover or more and throw an exception if there are not enough information to build one grid and one rover.
+
+The **UserInterface** class only missions are:
+* to check that the input from the user can create a proper ExplorerNasa
+* That the explorer's input allows the rovers to explorer without having issues like going out of the Plateau or bump with eachother
+If the input causes issues in the mission, then, the UserInterface warns the users throwing an exception. If the input produces the happy path that the rovers can explorer without issue, then the real NasaExplorer is created and launched.
 
 
 # 2. How to try the code
@@ -72,7 +91,7 @@ gradle run --args="5 5 1 2 N LMLMLMLMM 3 3 E MMRMMRMRRM"
 
 In the console, you will see the following:
 
-![Custom inputs from command line](./images/running custom inputs from command line.png)
+![Custom inputs from command line](./images/running custom inputs from command line.png?raw=true "Running custom inputs")
 
     
 This solution runs the input introduced and check that it could be performed without throwing exception.
